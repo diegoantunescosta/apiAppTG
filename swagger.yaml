@@ -1,0 +1,4124 @@
+swagger: '2.0'
+info:
+  description: |
+    A rede social que buscar conscientizar as pessoas sobre ecologia,
+    que faça com que elas plantem mais. Conheça o Locate Green agora e transforme
+    a conscientização em um jogo!
+
+  version: 1.0.0
+  title: Locate Green API
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+# host: petstore.swagger.io
+# basePath: /v2
+
+tags:
+
+- name: Ação
+  description: Todas as ações que o usuário fizer.
+
+- name: Avaliação
+  description: Avaliações de produtos é aqui!
+
+- name: Categoria
+  description: Categorias de produtos e plantas.
+
+- name: Cidade
+  description: Muitas cidades, olhe o que temos aqui!
+
+- name: Comentário
+  description: Tudo sobre os comentários de posts.
+
+- name: Conquista
+  description: Conquistas que os usuários podem conseguir.
+
+- name: Curtida
+  description: As interações com os posts, qual será a quantidade de curtidas? Reações mais utilizadas?
+
+- name: Endereço
+  description: A localização dos usuários e seus dados.
+
+- name: Estado
+  description: Cada destino, uma plantinha diferente!
+
+- name: País
+  description: Várias interações em vários países.
+
+- name: Planta
+  description: Vários tipos, gostos e preferências.
+
+- name: Produto
+  description: Todos os produtos que os usuários anunciaram para venda ou doação.
+
+- name: Publicação
+  description: Todas as postagens dos usuários.
+
+- name: Reação
+  description: Quais são as possíveis reações que poderemos utilizar nas curtidas? Aqui teremos elas.
+
+- name: Transação
+  description: Todas as transações ocorridas com produtos.
+
+- name: Usuário
+  description: Cada pessoa um universo diferente.
+
+paths:
+
+  #   CRIANDO ROTAS DE AVALIAÇÃO
+  # 
+  #   INICIO
+  # 
+
+  /rating:
+    
+    get:
+      tags:
+        - Avaliação
+      summary: Lista todas as avaliações!
+      operationId: getRating
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Avaliacao"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      security:
+        - api_key: []
+      tags:
+        - Avaliação
+      summary: Cria uma avaliação
+      operationId: postRating
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto Avalição para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Avaliacao'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+   
+    put:
+      security:
+        - api_key: []
+      tags:
+        - Avaliação
+      summary: Editar uma avaliação.
+      operationId: putRating
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto Avaliação para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Avaliacao'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /rating/{idAvaliacao}:
+    
+    get:
+      tags:
+      - Avaliação
+      summary: Buscar avaliação pelo ID.
+      description: Retorna uma única avaliação.
+      operationId: getRatingByID
+      produces:
+      - application/json
+      parameters:
+      - name: idAvaliacao
+        in: path
+        description: Necessário o ID da avaliação para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Avaliacao"
+        404:
+          description: Avaliação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      security:
+        - api_key: []
+      tags:
+        - Avaliação
+      summary: Editar uma avaliação.
+      operationId: putRatingByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto Avaliação para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Avaliacao'
+        - name: idAvaliacao
+          in: path
+          description: Necessário o ID da avaliação para retornar.
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Avaliação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      security:
+        - api_key: []
+      tags:
+      - Avaliação
+      summary: Usado para deletar uma avaliação.
+      operationId: deleteRatingByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idAvaliacao
+        in: path
+        description: ID da avaliação que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Avaliação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+  
+  /rating/findbyproduct/{idProduto}:
+    
+    get:
+      security:
+        - api_key: []
+      tags:
+      - Avaliação
+      summary: Procura avaliações de um determinado produto.
+      operationId: getRatingByProduct
+      produces:
+      - application/json
+      parameters:
+      - name: idProduto
+        in: path
+        description: ID do produto é necessário para buscar as avaliações.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Avaliacao"
+        400:
+          description: ID Inválido
+        404:
+          description: Produto não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  #   CRIANDO ROTAS DE CIDADES
+  # 
+  #   INICIO
+  # 
+
+  /city:
+    
+    get:
+      tags:
+        - Cidade
+      summary: Lista todas as cidades em que estamos presentes!
+      operationId: getCity
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Cidade"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - Cidade
+      summary: Cria um registro de cidade.
+      operationId: postCity
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto Cidade para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Cidade'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Cidade
+      summary: Editar informações de uma cidade.
+      operationId: putCity
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto Cidade para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Cidade'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+  
+  /city/{idCidade}:
+    
+    get:
+      tags:
+      - Cidade
+      summary: Buscar cidade pelo ID.
+      description: Retorna uma única cidade.
+      operationId: getCityByID
+      produces:
+      - application/json
+      parameters:
+      - name: idCidade
+        in: path
+        description: Necessário o ID da Cidade para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Cidade"
+        404:
+          description: Cidade não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Cidade
+      summary: Editar uma cidade.
+      operationId: putCityByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto Cidade para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Cidade'
+        - name: idCidade
+          in: path
+          description: Necessário o ID da Cidade para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Cidade não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Cidade
+      summary: Usado para deletar uma cidade.
+      operationId: deleteCityByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idCidade
+        in: path
+        description: ID da cidade que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Cidade não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /city/findbystate/{idEstado}:
+   
+    get:
+      tags:
+      - Cidade
+      summary: Procura cidades de um determinado estado.
+      operationId: getCitiesByState
+      produces:
+      - application/json
+      parameters:
+      - name: idEstado
+        in: path
+        description: ID do estado é necessário para buscar as cidades.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Cidade"
+        400:
+          description: ID Inválido
+        404:
+          description: Estado não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  #   CRIANDO ROTAS DE REAÇÕES
+  # 
+  #   INICIO
+  # 
+
+  /reaction:
+    
+    get:
+      security:
+        - api_key: []
+      tags:
+        - Reação
+      summary: Busca todas as reações.
+      operationId: getReaction
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Reacao"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      security:
+        - api_key: []
+      tags:
+        - Reação
+      summary: Cria uma nova reação.
+      operationId: postReaction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Objeto reação é necessário.
+          required: true
+          schema:
+            $ref: '#/definitions/Reacao'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+    put:
+      security:
+        - api_key: []
+      tags:
+        - Reação
+      summary: Editar uma reação.
+      operationId: putReaction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto Reação para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Reacao'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+
+  /reaction/{idReacao}:
+
+    get:
+      security:
+        - api_key: []
+      tags:
+      - Reação
+      summary: Buscar reação pelo ID.
+      description: Retorna uma única reação.
+      operationId: getReactionByID
+      produces:
+      - application/json
+      parameters:
+      - name: idReacao
+        in: path
+        description: Necessário o ID da reação para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Reacao"
+        404:
+          description: Reação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      security:
+        - api_key: []
+      tags:
+        - Reação
+      summary: Editar uma reação.
+      operationId: putReactionByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto reação para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Reacao'
+        - name: idReacao
+          in: path
+          description: Necessário o ID da reação para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Reação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      security:
+        - api_key: []
+      tags:
+      - Reação
+      summary: Usado para deletar uma reação.
+      operationId: deleteReactionByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idReacao
+        in: path
+        description: ID da reação que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Reação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /reaction/{idReacao}/uploadimage:
+    post:
+      security:
+        - api_key: []
+      tags:
+      - Reação
+      summary: Faz upload de uma imagem de reação possível.
+      operationId: uploadReactionImage
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: idReacao
+        in: path
+        description: ID da reação que iremos atualizar a imagem.
+        required: true
+        type: integer
+        format: int64
+      - name: additionalMetadata
+        in: formData
+        description: Dados adicionais da imagem para o servidor.
+        required: false
+        type: string
+      - name: file
+        in: formData
+        description: Imagem que iremos salvar.
+        required: true
+        type: file
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  #   CRIANDO ROTAS DE CATEGORIAS
+  # 
+  #   INICIO
+  #
+
+  /category:
+    
+    get:
+      tags:
+        - Categoria
+      summary: Lista todas as categorias de plantas e produtos!
+      operationId: getCategory
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Categoria"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - Categoria
+      summary: Cria uma nova categoria.
+      operationId: postCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto Categoria para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Categoria'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Categoria
+      summary: Editar uma categoria.
+      operationId: putCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto Categoria para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Categoria'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /category/{idCategoria}:
+    
+    get:
+      tags:
+      - Categoria
+      summary: Buscar categoria pelo ID.
+      description: Retorna uma única categoria.
+      operationId: getCategoryByID
+      produces:
+      - application/json
+      parameters:
+      - name: idCategoria
+        in: path
+        description: Necessário o ID da categoria para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Categoria"
+        404:
+          description: Categoria não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Categoria
+      summary: Editar uma categoria.
+      operationId: putCategoryByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto Categoria para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Categoria'
+        - name: idCategoria
+          in: path
+          description: Necessário o ID da Categoria para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Categoria não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Categoria
+      summary: Usado para deletar uma categoria.
+      operationId: deleteCategoryByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idCategoria
+        in: path
+        description: ID da categoria que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Categoria não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  #   CRIANDO ROTAS DE COMENTÁRIOS
+  # 
+  #   INICIO
+  # 
+
+  /comment:
+    
+    get:
+      tags:
+        - Comentário
+      summary: Lista todos os comentários de posts!
+      operationId: getComment
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Comentario"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - Comentário
+      summary: Cria um novo comentário.
+      operationId: postComment
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto Comentário para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Comentario'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Comentário
+      summary: Editar um comentário.
+      operationId: putComment
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto comentário para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Categoria'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /comment/{idComentario}:
+    
+    get:
+      tags:
+      - Comentário
+      summary: Buscar comentário pelo ID.
+      description: Retorna um único comentário.
+      operationId: getCommentByID
+      produces:
+      - application/json
+      parameters:
+      - name: idComentario
+        in: path
+        description: Necessário o ID do comentário para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Comentario"
+        404:
+          description: Comentário não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Comentário
+      summary: Editar um comentário.
+      operationId: putCommentByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto Comentário para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Comentario'
+        - name: idComentario
+          in: path
+          description: Necessário o ID do comentário para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Comentário não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Comentário
+      summary: Usado para deletar um comentário.
+      operationId: deleteCommentByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idComentario
+        in: path
+        description: ID do comentário que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Comentário não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+  
+  /comment/findbypost/{idPost}:
+
+    get:
+      tags:
+      - Comentário
+      summary: Procura comentários de um determinado post.
+      operationId: getCommentByPost
+      produces:
+      - application/json
+      parameters:
+      - name: idPost
+        in: path
+        description: ID do post é necessário para buscar os comentários.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Comentario"
+        400:
+          description: ID Inválido
+        404:
+          description: Post não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  #   CRIANDO ROTAS DE CONQUISTAS
+  # 
+  #   INICIO
+  # 
+
+  /achievement:
+
+    get:
+      tags:
+        - Conquista
+      summary: Lista todas as conquistas possíveis!
+      operationId: getAchievement
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Conquista"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - Conquista
+      summary: Cria uma nova conquista.
+      operationId: postAchievement
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto conquista para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Conquista'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Conquista
+      summary: Editar uma conquista.
+      operationId: putAchievement
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto conquista para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Conquista'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /achievement/{idConquista}:
+    
+    get:
+      tags:
+      - Conquista
+      summary: Buscar conquista pelo ID.
+      description: Retorna uma única conquista.
+      operationId: getAchievementByID
+      produces:
+      - application/json
+      parameters:
+      - name: idConquista
+        in: path
+        description: Necessário o ID da conquista para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Conquista"
+        404:
+          description: Conquista não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Conquista
+      summary: Editar uma conquista.
+      operationId: putAchievementByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto conquista para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Conquista'
+        - name: idConquista
+          in: path
+          description: Necessário o ID da conquista para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Comentário não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Conquista
+      summary: Usado para deletar uma conquista.
+      operationId: deleteAchievementByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idConquista
+        in: path
+        description: ID da conquista que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Conquista não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+  
+  /achievement/{idConquista}/uploadimage:
+    post:
+      tags:
+      - Conquista
+      summary: Faz upload de uma imagem de conquista.
+      operationId: uploadAchievementImage
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: idConquista
+        in: path
+        description: ID da conquista que iremos atualizar a imagem.
+        required: true
+        type: integer
+        format: int64
+      - name: additionalMetadata
+        in: formData
+        description: Dados adicionais da imagem para o servidor.
+        required: false
+        type: string
+      - name: file
+        in: formData
+        description: Imagem que iremos salvar.
+        required: true
+        type: file
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /achievement/{idConquista}/addtouser/{idUsuario}:
+
+    post:
+      tags:
+        - Conquista
+      summary: Adicionar uma conquista à um usuário.
+      operationId: addAchievement
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: api_key
+          in: header
+          required: false
+          type: string
+        - name: idConquista
+          in: path
+          description: ID da conquista que irá adicionar.
+          required: true
+          type: integer
+          format: int64
+        - name: idUsuario
+          in: path
+          description: ID do usuário.
+          required: true
+          type: integer
+          format: int64
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        404:
+          description: ID não encontrado!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /achievement/{idConquista}/rmtouser/{idUsuario}:
+
+    delete:
+      tags:
+        - Conquista
+      summary: Remove uma conquista de um usuário.
+      operationId: rmAchievement
+      produces:
+        - application/json
+      parameters:
+        - name: api_key
+          in: header
+          required: false
+          type: string
+        - name: idConquista
+          in: path
+          description: ID da conquista que irá remover.
+          required: true
+          type: integer
+          format: int64
+        - name: idUsuario
+          in: path
+          description: ID do usuário.
+          required: true
+          type: integer
+          format: int64
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para remover!
+        404:
+          description: ID não encontrado!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /achievement/findbyuser/{idUsuario}:
+
+    get:
+      tags:
+      - Conquista
+      summary: Procura conquistas de um determinado usuário.
+      operationId: getAchievementByUser
+      produces:
+      - application/json
+      parameters:
+      - name: idUsuario
+        in: path
+        description: ID do usuário é necessário para buscar suas conquistas.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Conquista"
+        400:
+          description: ID Inválido
+        404:
+          description: Usuário não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  #   CRIANDO ROTAS DE CURTIDAS
+  # 
+  #   INICIO
+  # 
+
+  /likes:
+
+    get:
+      tags:
+        - Curtida
+      summary: Lista todas as curtidas possíveis!
+      operationId: getLikes
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Curtida"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - Curtida
+      summary: Cria uma nova curtida em post.
+      operationId: postLikes
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto curtida para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Curtida'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Curtida
+      summary: Editar uma curtida.
+      operationId: putLikes
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto curtida para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Curtida'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /likes/{idCurtida}:
+    
+    get:
+      tags:
+      - Curtida
+      summary: Buscar curtida pelo ID.
+      description: Retorna uma única curtida.
+      operationId: getLikesByID
+      produces:
+      - application/json
+      parameters:
+      - name: idCurtida
+        in: path
+        description: Necessário o ID da curtida para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Curtida"
+        404:
+          description: Curtida não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Curtida
+      summary: Editar uma curtida.
+      operationId: putLikesByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto curtida para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Curtida'
+        - name: idCurtida
+          in: path
+          description: Necessário o ID da curtida para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Curtida não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Curtida
+      summary: Usado para deletar uma curtida.
+      operationId: deleteLikesByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idCurtida
+        in: path
+        description: ID da curtida que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Curtida não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+  
+  /likes/findbypost/{idPost}:
+
+    get:
+      tags:
+      - Curtida
+      summary: Buscar curtidas de um determinado post.
+      operationId: getLikesByUser
+      produces:
+      - application/json
+      parameters:
+      - name: idPost
+        in: path
+        description: ID do post é necessário para buscar suas curtidas.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Curtida"
+        400:
+          description: ID Inválido
+        404:
+          description: Post não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  #   CRIANDO ROTAS DE ENDEREÇOS
+  # 
+  #   INICIO
+  # 
+
+  /address:
+
+    get:
+      tags:
+        - Endereço
+      summary: Lista todos os endereços registrados!
+      operationId: getAddress
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Endereco"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - Endereço
+      summary: Cria um novo endereço.
+      operationId: postAddress
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto endereço para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Endereco'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Endereço
+      summary: Editar um endereço.
+      operationId: putAddress
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto endereço para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Endereco'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /address/{idEndereco}:
+    
+    get:
+      tags:
+      - Endereço
+      summary: Buscar endereço pelo ID.
+      description: Retorna um único endereço.
+      operationId: getAddressByID
+      produces:
+      - application/json
+      parameters:
+      - name: idEndereco
+        in: path
+        description: Necessário o ID do endereço para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Endereco"
+        404:
+          description: Endereço não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Endereço
+      summary: Editar um endereço.
+      operationId: putAddressByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto endereço para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Endereco'
+        - name: idEndereco
+          in: path
+          description: Necessário o ID do endereço para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Endereço não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Endereço
+      summary: Usado para deletar um endereço.
+      operationId: deleteAddressByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idEndereco
+        in: path
+        description: ID do endereço que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Endereço não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+  
+  /address/findbyuser/{idUsuario}:
+
+    get:
+      tags:
+      - Endereço
+      summary: Buscar endereço de um determinado usuário.
+      operationId: getAddressByUser
+      produces:
+      - application/json
+      parameters:
+      - name: idUsuario
+        in: path
+        description: ID do usuário é necessário para buscar seu endereço.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Endereco"
+        400:
+          description: ID Inválido
+        404:
+          description: Post não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  #   CRIANDO ROTAS DE ESTADOS
+  # 
+  #   INICIO
+  # 
+
+  /state:
+
+    get:
+      tags:
+        - Estado
+      summary: Lista todos os estados registrados!
+      operationId: getState
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Estado"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - Estado
+      summary: Registra um novo estado.
+      operationId: postState
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto estado para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Estado'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Estado
+      summary: Editar um estado.
+      operationId: putState
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto estado para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Estado'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /state/{idEstado}:
+    
+    get:
+      tags:
+      - Estado
+      summary: Buscar estado pelo ID.
+      description: Retorna um único estado.
+      operationId: getStateByID
+      produces:
+      - application/json
+      parameters:
+      - name: idEstado
+        in: path
+        description: Necessário o ID do estado para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Estado"
+        404:
+          description: Estado não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Estado
+      summary: Editar um estado.
+      operationId: putStateByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto estado para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Estado'
+        - name: idEstado
+          in: path
+          description: Necessário o ID do estado para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Estado não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Estado
+      summary: Usado para deletar um estado.
+      operationId: deleteStateByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idEstado
+        in: path
+        description: ID do estado que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Estado não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+  
+  /state/findbycountry/{idPais}:
+
+    get:
+      tags:
+      - Estado
+      summary: Buscar estados de um determinado país.
+      operationId: getStateByCountry
+      produces:
+      - application/json
+      parameters:
+      - name: idPais
+        in: path
+        description: ID do país é necessário para buscar seus estados.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Estado"
+        400:
+          description: ID Inválido
+        404:
+          description: País não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  #   CRIANDO ROTAS DE PAISES
+  # 
+  #   INICIO
+  # 
+
+  /country:
+
+    get:
+      tags:
+        - País
+      summary: Lista todos os países registrados!
+      operationId: getCountry
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Pais"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - País
+      summary: Registra um novo país.
+      operationId: postCountry
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto país para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Pais'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - País
+      summary: Editar um país.
+      operationId: putCountry
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto país para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Pais'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /country/{idPais}:
+    
+    get:
+      tags:
+      - País
+      summary: Buscar país pelo ID.
+      description: Retorna um único páis.
+      operationId: getCountryByID
+      produces:
+      - application/json
+      parameters:
+      - name: idPais
+        in: path
+        description: Necessário o ID do país para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Pais"
+        404:
+          description: País não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - País
+      summary: Editar um país.
+      operationId: putCountryByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto país para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Pais'
+        - name: idPais
+          in: path
+          description: Necessário o ID do país para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: País não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - País
+      summary: Usado para deletar um país.
+      operationId: deleteCountryByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idPais
+        in: path
+        description: ID do país que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: País não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  #   CRIANDO ROTAS DE PLANTAS
+  # 
+  #   INICIO
+  # 
+
+  /plant:
+
+    get:
+      tags:
+        - Planta
+      summary: Lista todas as plantas registradas!
+      operationId: getPlant
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Planta"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - Planta
+      summary: Registra uma nova planta.
+      operationId: postPlant
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto planta para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Planta'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Planta
+      summary: Editar uma planta.
+      operationId: putPlant
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto planta para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Planta'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /plant/{idPlanta}:
+    
+    get:
+      tags:
+      - Planta
+      summary: Buscar planta pelo ID.
+      description: Retorna uma única planta.
+      operationId: getPlantByID
+      produces:
+      - application/json
+      parameters:
+      - name: idPlanta
+        in: path
+        description: Necessário o ID da planta para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Planta"
+        404:
+          description: Planta não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Planta
+      summary: Editar uma planta.
+      operationId: putPlantByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto planta para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Planta'
+        - name: idPlanta
+          in: path
+          description: Necessário o ID da planta para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Planta não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Planta
+      summary: Usado para deletar uma planta.
+      operationId: deletePlantByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idPlanta
+        in: path
+        description: ID da planta que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Planta não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /plant/{idPlanta}/uploadimage:
+    post:
+      tags:
+      - Planta
+      summary: Faz upload de uma imagem da planta.
+      operationId: uploadPlantImage
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: idPlanta
+        in: path
+        description: ID da planta que iremos atualizar a imagem.
+        required: true
+        type: integer
+        format: int64
+      - name: additionalMetadata
+        in: formData
+        description: Dados adicionais da imagem para o servidor.
+        required: false
+        type: string
+      - name: file
+        in: formData
+        description: Imagem que iremos salvar.
+        required: true
+        type: file
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  #   CRIANDO ROTAS DE PUBLICAÇÃO
+  # 
+  #   INICIO
+  # 
+
+  /post:
+
+    get:
+      tags:
+        - Publicação
+      summary: Lista todas as publicações registradas!
+      operationId: getPosts
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Post"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - Publicação
+      summary: Registra uma nova publicação.
+      operationId: postPost
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto publicação para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Post'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Publicação
+      summary: Editar uma publicação.
+      operationId: putPost
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto publicação para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Post'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /post/{idPost}:
+    
+    get:
+      tags:
+      - Publicação
+      summary: Buscar publicação pelo ID.
+      description: Retorna uma única publicação.
+      operationId: getPostByID
+      produces:
+      - application/json
+      parameters:
+      - name: idPost
+        in: path
+        description: Necessário o ID da publicação para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Post"
+        404:
+          description: Publicação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Publicação
+      summary: Editar uma publicação.
+      operationId: putPostByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto publicação para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Post'
+        - name: idPost
+          in: path
+          description: Necessário o ID da publicação para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Publicação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Publicação
+      summary: Usado para deletar uma publicação.
+      operationId: deletePostByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idPost
+        in: path
+        description: ID da publicação que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Publicação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /post/{idPost}/uploadimage:
+    post:
+      tags:
+      - Publicação
+      summary: Faz upload de uma imagem de publicação.
+      operationId: uploadPostImage
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: idPost
+        in: path
+        description: ID da publicação que iremos atualizar a imagem.
+        required: true
+        type: integer
+        format: int64
+      - name: additionalMetadata
+        in: formData
+        description: Dados adicionais da imagem para o servidor.
+        required: false
+        type: string
+      - name: file
+        in: formData
+        description: Imagem que iremos salvar.
+        required: true
+        type: file
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  #   CRIANDO ROTAS DE PRODUTOS
+  # 
+  #   INICIO
+  # 
+
+  /product:
+
+    get:
+      tags:
+        - Produto
+      summary: Lista todos os produtos registrados!
+      operationId: getProduct
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Produto"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - Produto
+      summary: Registra um novo produto.
+      operationId: postProduct
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto produto para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Produto'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Produto
+      summary: Editar um produto.
+      operationId: putProduct
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto produto para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Produto'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /product/{idProduto}:
+    
+    get:
+      tags:
+      - Produto
+      summary: Buscar produto pelo ID.
+      description: Retorna um único produto.
+      operationId: getProductByID
+      produces:
+      - application/json
+      parameters:
+      - name: idProduto
+        in: path
+        description: Necessário o ID do produto para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Produto"
+        404:
+          description: Produto não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Produto
+      summary: Editar um produto.
+      operationId: putProductByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto produto para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Produto'
+        - name: idProduto
+          in: path
+          description: Necessário o ID do produto para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Produto não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Produto
+      summary: Usado para deletar um produto.
+      operationId: deleteProductByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idProduto
+        in: path
+        description: ID do produto que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Produto não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /product/{idProduto}/uploadimage:
+    post:
+      tags:
+      - Produto
+      summary: Faz upload de uma imagem do produto.
+      operationId: uploadProductImage
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: idProduto
+        in: path
+        description: ID do produto que iremos atualizar a imagem.
+        required: true
+        type: integer
+        format: int64
+      - name: additionalMetadata
+        in: formData
+        description: Dados adicionais da imagem para o servidor.
+        required: false
+        type: string
+      - name: file
+        in: formData
+        description: Imagem que iremos salvar.
+        required: true
+        type: file
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  #   CRIANDO ROTAS DE TRANSACÕES
+  # 
+  #   INICIO
+  # 
+
+  /transaction:
+
+    get:
+      tags:
+        - Transação
+      summary: Lista todas as transações registradas!
+      operationId: getTransaction
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Transacao"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - Transação
+      summary: Registra uma nova transação.
+      operationId: postTransaction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto transação para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Transacao'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Transação
+      summary: Editar uma transação.
+      operationId: putTransaction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto transação para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Transacao'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /transaction/{idTransacao}:
+    
+    get:
+      tags:
+      - Transação
+      summary: Buscar transação pelo ID.
+      description: Retorna uma única transação.
+      operationId: getTransactionByID
+      produces:
+      - application/json
+      parameters:
+      - name: idTransacao
+        in: path
+        description: Necessário o ID da transação para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Transacao"
+        404:
+          description: Transação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Transação
+      summary: Editar uma transação.
+      operationId: putTransactionByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto transação para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Transacao'
+        - name: idTransacao
+          in: path
+          description: Necessário o ID da transação para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Transação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Transação
+      summary: Usado para deletar uma transação.
+      operationId: deleteTransactionByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idTransacao
+        in: path
+        description: ID da transação que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Transação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+ 
+  /transaction/findbyuser/{idUsuario}:
+
+    get:
+      tags:
+      - Transação
+      summary: Procura transações de um determinado usuário.
+      operationId: getTransactionByUser
+      produces:
+      - application/json
+      parameters:
+      - name: idUsuario
+        in: path
+        description: ID do usuário é necessário para buscar suas transações.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Transacao"
+        400:
+          description: ID Inválido
+        404:
+          description: Usuário não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  #   CRIANDO ROTAS DE USUÁRIOS
+  # 
+  #   INICIO
+  # 
+
+  /user:
+
+    get:
+      tags:
+        - Usuário
+      summary: Lista todos os usuários registrados!
+      operationId: getUser
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Usuario"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+    post:
+      tags:
+        - Usuário
+      summary: Registra um novo usuário.
+      operationId: postUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto usuário para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Usuario'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+    put:
+      tags:
+        - Usuário
+      summary: Editar um usuário.
+      operationId: putUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto usuário para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Usuario'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+ 
+  /user/createwitharray:
+  
+    post:
+      tags:
+        - Usuário
+      summary: Registra vários usuários.
+      operationId: postUserArray
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um array de objetos usuário para criar!
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Usuario'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+  
+  /user/login:
+   
+    post:
+      tags:
+      - Usuário
+      summary: Login do Usuário
+      operationId: loginUser
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        in: body
+        description: Dados de e-mail e senha!
+        required: true
+        schema:
+            $ref: '#/definitions/Login'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        400:
+          description: Usuário não encontrado!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+  
+  /user/logout:
+   
+    get:
+      tags:
+      - Usuário
+      summary: Logout do Usuário
+      operationId: logoutUser
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        default:
+          description: OK
+  
+  /user/{idUser}:
+  
+    get:
+      tags:
+      - Usuário
+      summary: Buscar um usuário.
+      operationId: getUserByID
+      produces:
+      - application/json
+      parameters:
+      - name: idUser
+        in: path
+        description: ID do usuário é necessário. 
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Usuario"
+        404:
+          description: Usuário não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+  
+    put:
+      tags:
+        - Usuário
+      summary: Editar um usuário.
+      operationId: putUserByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto usuário para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Usuario'
+        - name: idUser
+          in: path
+          description: Necessário o ID do usuário para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Usuário não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Usuário
+      summary: Usado para deletar um usuário.
+      operationId: deleteUserByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idUser
+        in: path
+        description: ID do usuário que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Usuário não encontrado.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /user/redefinepwd:
+    post:
+      security:
+        - api_key: []
+      tags:
+      - Usuário
+      summary: Redefinir senha do usuário
+      operationId: redefinePwdUser
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/RPWD'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        400:
+          description: Usuário não encontrado!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /user/{idUsuario}/uploadimage:
+    post:
+      security:
+        - api_key: []
+      tags:
+      - Usuário
+      summary: Faz upload de uma imagem do usuário.
+      operationId: uploadUserImage
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: idUsuario
+        in: path
+        description: ID do usuário que iremos atualizar a imagem.
+        required: true
+        type: integer
+        format: int64
+      - name: additionalMetadata
+        in: formData
+        description: Dados adicionais da imagem para o servidor.
+        required: false
+        type: string
+      - name: file
+        in: formData
+        description: Imagem que iremos salvar.
+        required: true
+        type: file
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ApiResponse'
+  
+  #   CRIANDO ROTAS DE AÇÕES
+  # 
+  #   INICIO
+  # 
+
+  /action:
+
+    get:
+      tags:
+        - Ação
+      summary: Lista todas as ações registradas!
+      operationId: getAction
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Acao"
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    post:
+      tags:
+        - Ação
+      summary: Registra uma nova ação.
+      operationId: postAction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto ação para criar!
+          required: true
+          schema:
+            $ref: '#/definitions/Acao'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para inserir!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Ação
+      summary: Editar uma ação.
+      operationId: putAction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto ação para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Acao'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /action/{idAcao}:
+    
+    get:
+      tags:
+      - Ação
+      summary: Buscar ação pelo ID.
+      description: Retorna uma única ação.
+      operationId: getActionByID
+      produces:
+      - application/json
+      parameters:
+      - name: idAcao
+        in: path
+        description: Necessário o ID da ação para retornar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Acao"
+        404:
+          description: Ação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    put:
+      tags:
+        - Ação
+      summary: Editar uma ação.
+      operationId: putActionByID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: É necessário um objeto ação para editar!
+          required: true
+          schema:
+            $ref: '#/definitions/Acao'
+        - name: idAcao
+          in: path
+          description: Necessário o ID da ação para editar!
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        401:
+          description: Você não tem autorização para fazer essa edição!
+        404:
+          description: Ação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+    
+    delete:
+      tags:
+      - Ação
+      summary: Usado para deletar uma ação.
+      operationId: deleteActionByID
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: idAcao
+        in: path
+        description: ID da ação que irá apagar.
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: ID Inválido
+        401:
+          description: Você não tem autorização para apagar!
+        404:
+          description: Ação não encontrada.
+        405:
+          description: Método não encontrado.
+        500:
+          description: Parece que o servidor morreu.
+
+  /action/{idAcao}/uploadimage:
+    post:
+      tags:
+      - Ação
+      summary: Faz upload de uma imagem de ação do usuário.
+      operationId: uploadActionImage
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: idAcao
+        in: path
+        description: ID da ação que iremos atualizar a imagem.
+        required: true
+        type: integer
+        format: int64
+      - name: additionalMetadata
+        in: formData
+        description: Dados adicionais da imagem para o servidor.
+        required: false
+        type: string
+      - name: file
+        in: formData
+        description: Imagem que iremos salvar.
+        required: true
+        type: file
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+
+definitions:
+
+  Login:
+    type: object
+    required:
+      - email
+      - senha
+    properties:
+      email:
+        type: string
+        example: examplo@gmail.com
+      senha:
+        type: string
+        format: password
+        example: senha123
+    xml:
+      name: Login
+
+  RPWD:
+    type: object
+    required:
+      - senha
+    properties:
+      senha:
+        type: string
+        format: password
+        example: senha123
+    xml:
+      name: RPWD
+
+  Pais:
+    type: object
+    required:
+      - pais
+    properties:
+      idPais:
+        type: integer
+        format: int64
+        example: 1
+      pais:
+        type: string
+        example: Brasil
+    xml:
+      name: Pais
+
+  Estado:
+    type: object
+    required:
+      - estado
+      - idPais
+    properties:
+      idEstado:
+        type: integer
+        format: int64
+        example: 1
+      estado:
+        type: string
+        example: São Paulo
+      idPais:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Pais'
+    xml:
+      name: Estado
+
+  Cidade:
+    type: object
+    required:
+      - cidade
+      - idEstado
+    properties:
+      idCidade:
+        type: integer
+        format: int64
+        example: 1
+      cidade:
+        type: string
+        example: Herculândia
+      idEstado:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Estado'
+    xml:
+      name: Cidade
+
+  Endereco:
+    type: object
+    required:
+      - idCidade
+      - numero
+      - bairro
+      - rua
+    properties:
+      idEndereco:
+        type: integer
+        format: int64
+        example: 1
+      rua:
+        type: string
+        example: Rua das flores
+      numero:
+        type: string
+        example: 123
+      bairro:
+        type: string
+        example: Jardim Tangará
+      idCidade:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Cidade'
+    xml:
+      name: Endereco
+
+  Comentario:
+    type: object
+    required:
+      - comentario
+      - idUsuario
+      - idPost
+    properties:
+      idComentario:
+        type: integer
+        format: int64
+        example: 1
+      comentario:
+        type: string
+        example: Nossa, gostei muito dessa sua plantinha! Irei dar uma passada ai depois.
+      idUsuario:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Usuario'
+      idPost:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Post'
+    xml:
+      name: Comentario
+
+  Post:
+    type: object
+    required:
+      - imagePath
+      - idUsuario
+      - legenda
+    properties:
+      idPost:
+        type: integer
+        format: int64
+        example: 1
+      legenda:
+        type: string
+        example: Amando cada segundo com minha plantinha.
+      imagePath:
+        type: string
+        example: /imagem/post/1/image.jpg
+      idUsuario:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Usuario'
+    xml:
+      name: Post
+
+  Reacao:
+    type: object
+    required:
+      - nome
+      - icon
+    properties:
+      idReacao:
+        type: integer
+        format: int64
+        example: 1
+      reacao:
+        type: string
+        example: Loves
+      icon:
+        type: string
+        example: /icon/loves.png
+    xml:
+      name: Reacao
+
+  Curtida:
+    type: object
+    required:
+      - idReacao
+      - idPost
+      - idUsuario
+    properties:
+      idCurtida:
+        type: integer
+        format: int64
+        example: 1
+      idReacao:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Reacao'
+      idPost:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Post'
+      idUsuario:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Usuario'
+    xml:
+      name: Curtida
+
+  Avaliacao:
+    type: object
+    required:
+      - idProduto
+      - idUsuario
+      - avaliacao
+    properties:
+      idAvaliacao:
+        type: integer
+        format: int64
+        example: 1
+      idProduto:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Produto'
+      idUsuario:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Usuario'
+      avaliacao:
+        type: integer
+        example: 5
+        description: Quantidade de estrelas de 0 a 5
+        minimum: 1
+        maximum: 5
+      comentario:
+        type: string
+        example: "Gostei muito de como essa muda chegou para mim!"
+    xml:
+      name: Avaliacao
+
+  Conquistas_Usuarios:
+    type: object
+    required:
+      - idUsuario
+      - idConquista
+    properties:
+      idUsuario:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Usuario'
+      idConquista:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Conquista'
+    xml:
+      name: Conquistas_Usuarios
+
+  Conquista:
+    type: object
+    required:
+      - nome
+      - pontos
+    properties:
+      idConquista:
+        type: integer
+        format: int64
+        example: 1
+      nome:
+        type: string
+        example: O Ecológico
+      numAjudas:
+        type: integer
+        example: 15
+      numPlantas:
+        type: integer
+        example: 30
+      numDoacoes:
+        type: integer
+        example: 50
+      numVendas:
+        type: integer
+        example: 0
+      pontos:
+        type: number
+        example: 50
+        description: Sempre que a pessoa completar o número de numAjudas ou outro, será somado 50 pontos para ela.
+    xml:
+      name: Conquista
+
+  Acao:
+    type: object
+    required:
+      - idUsuario
+      - idPlanta
+    properties:
+      idAcao:
+        type: integer
+        format: int64
+        example: 1
+      atividade:
+        type: string
+        example: Reguei a dama da noite, felicidade!
+      idUsuario:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Usuario'
+      imagePath:
+        type: string
+        example: /imagem/plantinha/dama-da-noite.jpg
+      idPlanta:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Planta'
+    xml:
+      name: Acao
+
+  Planta:
+    type: object
+    required:
+      - lat
+      - long
+      - nome
+      - imagePath
+      - idCategoria
+      - idUsuario
+    properties:
+      idPlanta:
+        type: integer
+        format: int64
+        example: 1
+      lat:
+        type: number
+        example: -148134.5453
+      long:
+        type: number
+        example: -135345.5673
+      nome:
+        type: string
+        example: Dama da noite
+      legenda:
+        type: string
+        example: Planta lindissima demais, tem um cheiro ótimo.
+      cuidados:
+        type: string
+        example: Regar até três vezes ao dia com 200ml de água. Necessário ficar no sol!
+      idUsuario:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Usuario'
+      idCategoria:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Categoria'
+      imagePath:
+        type: string
+        example: /imagem/tal.png
+    xml:
+      name: Planta
+
+  Transacao:
+    type: object
+    required:
+      - idUsuario
+      - idProduto
+      - qtd
+    properties:
+      idTransacao:
+        type: integer
+        format: int64
+        example: 1
+      idUsuario:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Usuario'
+      idProduto:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Produto'
+      qtd:
+        type: integer
+        default: 1
+        example: 12
+    xml:
+      name: Transacao
+
+  Categoria:
+    type: object
+    required:
+      - categoria
+    properties:
+      idCategoria:
+        type: integer
+        format: int64
+        example: 1
+      categoria:
+        type: string
+        example: Orquideas
+    xml:
+      name: Categoria
+  
+  Usuario:
+    type: object
+    required:
+      - nome
+      - email
+      - senha
+      - idEndereco
+    properties:
+      idUsuario:
+        type: integer
+        format: int64
+        example: 1
+      nome:
+        type: string
+        example: José Maria dos Santos
+      email:
+        type: string
+        format: email
+        example: teste@teste.com
+      senha:
+        type: string
+        format: password
+        example: senha123
+      idEndereco:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Endereco'
+      imagePath:
+        type: string
+        example: /imagem/eu.jpg
+    xml:
+      name: Usuario
+  
+  Produto:
+    type: object
+    required:
+      - nome
+      - imagePath
+      - doacao
+      - idCategoria
+      - idUsuario
+    properties:
+      idProduto:
+        type: integer
+        format: int64
+        example: 1
+      nome:
+        type: string
+        example: Rosa do Deserto
+      preco:
+        type: number
+        format: double
+        default: 0.00
+        example: 10.00
+      imagePath:
+        type: string
+        example: /imagem/tal.png
+      legenda:
+        type: string
+        example: Essa planta milagrosa cura o cancer.
+      idCategoria:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Categoria'
+      estoque:
+        type: integer
+        default: 1
+        example: 1
+      doacao:
+        type: boolean
+        default: false
+        example: false
+      idUsuario:
+        type: integer
+        format: int64
+        example: 1
+        # $ref: '#/definitions/Usuario'
+    xml:
+      name: Produto
+  
+  ApiResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      type:
+        type: string
+      message:
+        type: string
+
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+
+# host: 35.198.45.7:3000
+host: localhost:3000
+basePath: /
+schemes:
+ - http
