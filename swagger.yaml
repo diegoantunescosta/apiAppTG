@@ -4117,8 +4117,8 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 
-# host: 35.198.45.7:3000
-host: localhost:38424
+
+host: medaumaplantinha-api.herokuapp.com
 basePath: /
 schemes:
  - http
