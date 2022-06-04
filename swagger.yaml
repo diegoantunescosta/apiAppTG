@@ -4118,7 +4118,7 @@ externalDocs:
   url: http://swagger.io
 
 # host: 35.198.45.7:3000
-host: localhost:3000
+host: localhost:38424
 basePath: /
 schemes:
  - http
