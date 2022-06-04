@@ -1,8 +1,8 @@
 const config = {
-    username: 'root',
-    password: 'root',
-    database: 'locategreen',
-    host: 'localhost',
+    username: 'lbjj9rhwwwert8y7',
+    password: 'jlk1cjorcjxdhzm9',
+    database: 'bvsjwfo097pdpdfp',
+    host: 'wb39lt71kvkgdmw0.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
     port: 3306,
     dialect: 'mysql',
     operatorAliases: false,
