@@ -4118,7 +4118,7 @@ externalDocs:
   url: http://swagger.io
 
 
-host: medaumaplantinha-api.herokuapp.com/
+host: https://medaumaplantinha-api.herokuapp.com
 basePath: /
 schemes:
  - http
