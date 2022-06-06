@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   description: |
     A rede social que buscar conscientizar as pessoas sobre ecologia,
-    que faça com que elas plantem mais. Conheça o Locate Green agora e transforme
+    que faça com que elas plantem mais. Conheça a "me dá uma plantinha" agora e transforme
     a conscientização em um jogo!
 
   version: 1.0.0
